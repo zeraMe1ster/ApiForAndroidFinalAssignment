@@ -1,0 +1,38 @@
+{
+  "name": "t2-backend-api-zeraMe1ster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "start-watch": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/softwarica-github/t2-backend-api-zeraMe1ster.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/softwarica-github/t2-backend-api-zeraMe1ster/issues"
+  },
+  "homepage": "https://github.com/softwarica-github/t2-backend-api-zeraMe1ster#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concat": "^1.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.8.11",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
