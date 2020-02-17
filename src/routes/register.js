@@ -5,24 +5,49 @@ const Register = require("../models/register.model");
 const router = express.Router();
 const auth = require("../auth");
 
-router.post("/register_user", (req, res, next) => {
-  let password = req.body.password;
-  bcrypt.hash(password, 10, function(err, hash) {
-    if (err) {
-      throw new Error("Could not hash!");
-    }
-    Register.create({
-      fullname: req.body.fullname,
-      email: req.body.email,
-      password: hash
-    })
-      .then(register => {
-        let token = jwt.sign({ _id: register._id }, 'AnythingCanBeMySecretKey');
-        res.json({ status: "Signup success!", token: token });
-      })
-      .catch(next);
-  });
+var fs = require("fs");
+var multer = require("multer");
+var path = require("path");
+
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "uploads/images");
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+  }
 });
+
+var upload = multer({ storage: storage });
+
+router.post(
+  "/register_user",
+  upload.single("profilePicture"),
+  (req, res, next) => {
+    console.log(req.file);
+    let password = req.body.password;
+    // console.log(req.body);
+    bcrypt.hash(password, 10, function(err, hash) {
+      if (err) {
+        throw new Error("Could not hash!");
+      }
+      Register.create({
+        fullname: req.body.fullname,
+        email: req.body.email,
+        password: hash,
+        image: req.file.filename
+      })
+        .then(register => {
+          let token = jwt.sign(
+            { _id: register._id },
+            "AnythingCanBeMySecretKey"
+          );
+          res.json({ status: "Signup success!", token: token });
+        })
+        .catch(next);
+    });
+  }
+);
 //forgot password
 router.post("/forgotpassword", (req, res, next) => {
   let password = req.body.password;
@@ -41,6 +66,7 @@ router.post("/forgotpassword", (req, res, next) => {
   });
 });
 router.post("/login_user", (req, res, next) => {
+  console.log(req.body.email);
   Register.findOne({ email: req.body.email })
     .then(register => {
       if (register == null) {
@@ -59,7 +85,11 @@ router.post("/login_user", (req, res, next) => {
 
             let token = jwt.sign({ _id: register._id }, process.env.SECRET);
             console.log(token);
-            res.json({ status: "Login success!", token: token, _id: register._id });
+            res.json({
+              status: "Login success!",
+              token: token,
+              _id: register._id
+            });
             // res.json({ _id: register._id })
           })
           .catch(next);

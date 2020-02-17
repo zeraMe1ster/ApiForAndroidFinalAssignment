@@ -11,7 +11,8 @@ const Register = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  image: String
 });
 
 module.exports = mongoose.model("register", Register);

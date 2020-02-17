@@ -31,6 +31,7 @@ app.use(express.json());
 app.options("*", cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "../public"));
+app.use("/uploads", express.static(__dirname + "/uploads/images"));
 require("./db/connect");
 app.use(express.json());
 app.use("/register", registerRoute);
