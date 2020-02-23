@@ -42,6 +42,7 @@ app.use("/notification", NotificationRoute);
 app.use("/cart", CartRoute);
 app.use("/buy", BuyRoute);
 app.use(auth.verifyUser);
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.statusCode = 500;

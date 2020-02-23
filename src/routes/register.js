@@ -149,4 +149,30 @@ router.delete("/deleteuser/:id", function(req, res, next) {
   });
 });
 
+// new api
+router.post("/reqProfile", (req, res, next) => {
+  const id = req.body._id;
+  result = [];
+  var data = {};
+  Register.find({ _id: id })
+    .exec()
+    .then(doc => {
+      if (doc) {
+        console.log(doc);
+        data.fullname = doc[0].fullname;
+        data.email = doc[0].email;
+        data.image = doc[0].image;
+        res.json(data);
+      } else {
+        res.status(404).json({
+          message: "No users found"
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+});
+
 module.exports = router;
